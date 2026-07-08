@@ -19,6 +19,13 @@ repositories {
     maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
     maven("https://maven.terraformersmc.com/") { name = "ModMenu" }
     maven("https://maven.nucleoid.xyz/") { name = "Placeholder API" }
+    maven("https://api.modrinth.com/maven/") { name = "Modrinth Maven" }
+    maven("https://maven.architectury.dev/") { name = "Architectury Maven" }
+    maven("https://maven.latvian.dev/releases") { name = "Latvian Maven" }
+    maven("https://maven.ladysnake.org/releases") { name = "Ladysnake Maven" }
+    maven("https://jitpack.io") { name = "Jitpack" }
+    maven("https://maven.quiltmc.org/repository/release") { name = "QuiltMC Maven" }
+    maven("https://maven.jamieswhiteshirt.com/libs-release")
 }
 
 dependencies {
@@ -31,6 +38,12 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric-loader")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric-api")}")
     modImplementation("com.terraformersmc:modmenu:${property("deps.mod_menu")}")
+
+    modImplementation("maven.modrinth:origins:${property("deps.origins")}")
+
+    modApi("com.github.apace100:apoli:2.9.0")
+
+    modApi("dev.latvian.mods:kubejs-fabric:${property("deps.kubejs")}")
 }
 
 fabricApi {
@@ -110,11 +123,13 @@ publishMods {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
         minecraftVersions.addAll(supportedMinecraftVersions)
+        requires("origins", "kubejs")
     }
 
     curseforge {
         projectId = property("publish.curseforge") as String
         accessToken = env.CURSEFORGE_API_KEY.orNull()
         minecraftVersions.addAll(supportedMinecraftVersions)
+        requires("origins", "kubejs")
     }
 }

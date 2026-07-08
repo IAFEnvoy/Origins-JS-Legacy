@@ -14,12 +14,30 @@ jsonlang {
 
 repositories {
     maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+    maven("https://api.modrinth.com/maven/") { name = "Modrinth Maven" }
+    maven("https://maven.architectury.dev/") { name = "Architectury Maven" }
+    maven("https://maven.latvian.dev/releases") { name = "Latvian Maven" }
+    flatDir { dir(rootProject.file("libs")) }
 }
 
 dependencies {
 //    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
 //    modImplementation("io.github.llamalad7:mixinextras-common:0.2.0")?.let { annotationProcessor(it) }
 //    modImplementation("io.github.llamalad7:mixinextras-forge:0.2.0")?.let { jarJar(it) }
+
+    modImplementation("maven.modrinth:origins-forge:${property("deps.origins")}") {
+        isTransitive = true
+    }
+
+    modRuntimeOnly("local:additionalentityattributes-forge:1.4.0.5+1.20.1")
+    modRuntimeOnly("local:apoli-forge:1.20.1-2.9.0.8")
+    modRuntimeOnly("local:calio-forge:1.20.1-1.11.0.5")
+    implementation("local:additionalentityattributes-forge:1.4.0.5+1.20.1")
+    implementation("local:apoli-forge:1.20.1-2.9.0.8")
+    implementation("local:calio-forge:1.20.1-1.11.0.5")
+
+    modApi("dev.latvian.mods:kubejs-forge:${property("deps.kubejs")}")
+//    interfaceInjectionData("dev.latvian.mods:kubejs-forge:${property("deps.kubejs")}")
 }
 
 legacyForge {
@@ -91,10 +109,10 @@ java {
 val supportedMinecraftVersions: List<String> = com.google.common.collect.ImmutableList.builder<String>()
     .addAll(
         (property("publish.additionalVersions") as String?)
-        ?.split(",")
-        ?.map { it.trim() }
-        ?.filter { it.isNotEmpty() }
-        ?: emptyList())
+            ?.split(",")
+            ?.map { it.trim() }
+            ?.filter { it.isNotEmpty() }
+            ?: emptyList())
     .add(stonecutter.current.version)
     .build()
 
@@ -134,11 +152,13 @@ publishMods {
         projectId = property("publish.modrinth") as String
         accessToken = env.MODRINTH_API_KEY.orNull()
         minecraftVersions.addAll(supportedMinecraftVersions)
+        requires("origins-forge", "kubejs")
     }
 
     curseforge {
         projectId = property("publish.curseforge") as String
         accessToken = env.CURSEFORGE_API_KEY.orNull()
         minecraftVersions.addAll(supportedMinecraftVersions)
+        requires("origins-forge", "kubejs")
     }
 }

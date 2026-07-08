@@ -22,3 +22,17 @@ side = "BOTH"
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraft_version_range_forge}"
+
+[[dependencies.${mod_id}]]
+modId = "origins"
+mandatory = true
+versionRange = "[1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "kubejs"
+mandatory = true
+versionRange = "[1,)"
+ordering = "AFTER"
+side = "BOTH"
