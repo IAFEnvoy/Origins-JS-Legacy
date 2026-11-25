@@ -48,7 +48,7 @@ OriginsJS.powerBuilder("regeneration_power")
 Create `kubejs/server_scripts/origins.js`:
 
 ```js
-// Assign a random origin on first join
+// Set avian origins by default
 PlayerEvents.loggedIn(event => {
     let holder = OriginsJS.getHolder(event.player);
     if (holder && !holder.hasAllOrigins()) {
